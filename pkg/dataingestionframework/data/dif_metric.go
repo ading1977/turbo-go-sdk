@@ -11,7 +11,7 @@ type DIFMetricVal struct {
 	Min         *float64       `json:"min,omitempty"`
 	Max         *float64       `json:"max,omitempty"`
 	Capacity    *float64       `json:"capacity,omitempty"`
-	Unit        *DIFMetricUnit `json:"unit,omitempty"`
+	Unit        *DIFMetricUnit `json:"unit,omitempty" jsonschema:"description=Units for different metrics,enum=count,enum=tps,enum=ms,enum=mb,enum=mhz,enum=pct"`
 	Key         *string        `json:"key,omitempty"`
 	Resizable   *bool          `json:"resizable,omitempty"`
 	Description *string        `json:"description,omitempty"`

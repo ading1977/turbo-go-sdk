@@ -1,0 +1,213 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Topology",
+  "definitions": {
+    "DIFEntity": {
+      "required": [
+        "uniqueId",
+        "type",
+        "name"
+      ],
+      "properties": {
+        "uniqueId": {
+          "type": "string",
+          "description": "Entity ID"
+        },
+        "type": {
+          "enum": [
+            "businessApplication",
+            "businessTransaction",
+            "service",
+            "application",
+            "databaseServer",
+            "virtualMachine",
+            "container"
+          ],
+          "type": "string",
+          "description": "Entity type"
+        },
+        "name": {
+          "type": "string",
+          "description": "Entity display name"
+        },
+        "hostedOn": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "$ref": "#/definitions/DIFHostedOn",
+          "description": "Attributes used to find the entity that hosts this entity"
+        },
+        "matchIdentifiers": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "$ref": "#/definitions/DIFMatchingIdentifiers",
+          "description": "Attributes used to find the entity that matches this entity"
+        },
+        "partOf": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$ref": "#/definitions/DIFPartOf"
+          },
+          "type": "array",
+          "description": "Attributes used to find all the entities that this entity is part of"
+        },
+        "metrics": {
+          "patternProperties": {
+            ".*": {
+              "items": {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "$ref": "#/definitions/DIFMetricVal"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object",
+          "description": "Metrics and values for the entity"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DIFHostedOn": {
+      "required": [
+        "hostType",
+        "ipAddress",
+        "hostUuid"
+      ],
+      "properties": {
+        "hostType": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "description": "Entity type of the provider of this entity"
+        },
+        "ipAddress": {
+          "type": "string",
+          "description": "IP Address of the host entity"
+        },
+        "hostUuid": {
+          "type": "string",
+          "description": "Unique identifier for the host entity"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DIFMatchingIdentifiers": {
+      "required": [
+        "ipAddress"
+      ],
+      "properties": {
+        "ipAddress": {
+          "type": "string",
+          "description": "IP Address of the entity used to find the matching entity"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DIFMetricVal": {
+      "required": [
+        "average"
+      ],
+      "properties": {
+        "average": {
+          "type": "number"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "capacity": {
+          "type": "number"
+        },
+        "unit": {
+          "enum": [
+            "count",
+            "tps",
+            "ms",
+            "mb",
+            "mhz",
+            "pct"
+          ],
+          "type": "string",
+          "description": "Units for different metrics"
+        },
+        "key": {
+          "type": "string"
+        },
+        "resizable": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "rawData": {
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DIFPartOf": {
+      "required": [
+        "entity",
+        "uniqueId"
+      ],
+      "properties": {
+        "entity": {
+          "enum": [
+            "businessApplication",
+            "businessTransaction",
+            "service",
+            "application",
+            "databaseServer"
+          ],
+          "type": "string",
+          "description": "Entity type of the parent entity"
+        },
+        "uniqueId": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Topology": {
+      "required": [
+        "version",
+        "updateTime",
+        "scope",
+        "topology"
+      ],
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "updateTime": {
+          "type": "integer",
+          "description": "Epoch timestamp for when files are generated"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "topology": {
+          "items": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$ref": "#/definitions/DIFEntity"
+          },
+          "type": "array",
+          "description": "List of topology entities"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}

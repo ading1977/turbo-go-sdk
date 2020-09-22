@@ -7,6 +7,10 @@ build:
 test:
 	@go test -v -race ./pkg/...
 
+bin=utility
+utility: clean
+	@go build -o ${bin} ./cmd
+
 .PHONY: fmtcheck
 fmtcheck:
 	@gofmt -l $(SOURCE_DIRS) | grep ".*\.go"; if [ "$$?" = "0" ]; then exit 1; fi
@@ -14,3 +18,6 @@ fmtcheck:
 .PHONY: vet
  vet:
 	@go vet $(shell $(PACKAGES))
+
+clean:
+	@rm -rf ${bin}

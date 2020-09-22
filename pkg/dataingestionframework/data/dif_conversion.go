@@ -2,71 +2,73 @@ package data
 
 import (
 	set "github.com/deckarep/golang-set"
-	"github.com/turbonomic/turbo-go-sdk/pkg/proto"
 )
 
-// USING the common DIF Data
-var DIFEntityType = map[proto.EntityDTO_EntityType]string{
-	proto.EntityDTO_VIRTUAL_MACHINE:       "virtualMachine",
-	proto.EntityDTO_APPLICATION_COMPONENT: "application",
-	proto.EntityDTO_BUSINESS_APPLICATION:  "businessApplication",
-	proto.EntityDTO_BUSINESS_TRANSACTION:  "businessTransaction",
-	proto.EntityDTO_DATABASE_SERVER:       "databaseServer",
-	proto.EntityDTO_SERVICE:               "service",
-}
-
-type DIFHostType string
+type DIFEntityType string
 
 const (
-	VM        DIFHostType = "virtualMachine"
-	CONTAINER DIFHostType = "container"
+	VM              DIFEntityType = "virtualMachine"
+	CONTAINER       DIFEntityType = "container"
+	APPLICATION     DIFEntityType = "application"
+	SERVICE         DIFEntityType = "service"
+	DATABASE_SERVER DIFEntityType = "databaseServer"
+	BUSINESS_APP    DIFEntityType = "businessApplication"
+	BUSINESS_TRANS  DIFEntityType = "businessTransaction"
 )
 
-var DIFMetricType = map[proto.CommodityDTO_CommodityType]string{
-	proto.CommodityDTO_RESPONSE_TIME:         "responseTime",
-	proto.CommodityDTO_TRANSACTION:           "transaction",
-	proto.CommodityDTO_VCPU:                  "cpu",
-	proto.CommodityDTO_VMEM:                  "memory",
-	proto.CommodityDTO_THREADS:               "threads",
-	proto.CommodityDTO_HEAP:                  "heap",
-	proto.CommodityDTO_REMAINING_GC_CAPACITY: "remainingGCCapacity",
-	proto.CommodityDTO_DB_MEM:                "dbMem",
-	proto.CommodityDTO_DB_CACHE_HIT_RATE:     "dbCacheHitRate",
-	proto.CommodityDTO_CONNECTION:            "connection",
-	proto.CommodityDTO_KPI:                   "kpi",
+var validDIFEntities = []interface{}{
+	APPLICATION,
+	BUSINESS_APP,
+	BUSINESS_TRANS,
+	DATABASE_SERVER,
+	SERVICE,
+	VM,
+	CONTAINER,
 }
 
-var validDIFEntities = []interface{}{
-	"application",
-	"businessApplication",
-	"businessTransaction",
-	"databaseServer",
-	"service",
-	"virtualMachine",
-}
+type DIFMetricType string
+
+const (
+	RESPONSE_TIME    DIFMetricType = "responseTime"
+	TRANSACTION      DIFMetricType = "transaction"
+	CONNECTION       DIFMetricType = "connection"
+	CPU              DIFMetricType = "cpu"
+	MEMORY           DIFMetricType = "memory"
+	THREADS          DIFMetricType = "threads"
+	HEAP             DIFMetricType = "heap"
+	COLLECTION_TIME  DIFMetricType = "collectionTime"
+	DBMEM            DIFMetricType = "dbMem"
+	DBCACHEHITRATE   DIFMetricType = "dbCacheHitRate"
+	KPI              DIFMetricType = "kpi"
+	CLUSTER          DIFMetricType = "cluster"
+	IO               DIFMetricType = "io"
+	NET_THROUPUT     DIFMetricType = "netThroughput"
+	APPLICATION_COMM DIFMetricType = "application"
+	TRANSACTION_LOG  DIFMetricType = "transactionLog"
+)
 
 var validDIFMetrics = []interface{}{
-	"collectionTime",
-	"connection",
-	"cpu",
-	"dbCacheHitRate",
-	"dbMem",
-	"heap",
-	"kpi",
-	"memory",
-	"threads",
-	"responseTime",
-	"transaction",
+	COLLECTION_TIME,
+	CONNECTION,
+	CPU,
+	DBCACHEHITRATE,
+	DBMEM,
+	HEAP,
+	KPI,
+	MEMORY,
+	THREADS,
+	RESPONSE_TIME,
+	TRANSACTION,
 }
 
 var DIFEntities = set.NewSetFromSlice(validDIFEntities)
 
-func IsValidDIFEntity(entity string) bool {
+func IsValidDIFEntity(entity DIFEntityType) bool {
 	return DIFEntities.Contains(entity)
 }
 
 var DIFMetrics = set.NewSetFromSlice(validDIFMetrics)
 
-func IsValidDIFMetric(metric string) bool {
+func IsValidDIFMetric(metric DIFMetricType) bool {
 	return DIFMetrics.Contains(metric)
 }
